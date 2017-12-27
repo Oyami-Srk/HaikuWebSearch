@@ -1,3 +1,7 @@
+/*
+ *  Made for Haiku.
+ *  Distributed under the terms of the MIT license.
+*/       
 #include "SearchView.h"
 #include <String.h>
 #include <TextView.h>

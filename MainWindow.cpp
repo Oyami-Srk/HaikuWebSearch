@@ -1,3 +1,7 @@
+/*
+ *  Made for Haiku.
+ *  Distributed under the terms of the MIT license.
+*/
 #include "SearchView.h"
 #include "MainWindow.h"
 #include <Button.h>

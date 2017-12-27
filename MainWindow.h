@@ -1,3 +1,7 @@
+/*
+ *  Made for Haiku.
+ *  Distributed under the terms of the MIT license.
+*/
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
