@@ -84,7 +84,7 @@ SearchView::iLoad()
 		search_engines.insert(std::pair<std::string, std::string>("Good Search", 
 				"http://www.goodsearch.com/search-web?charityid=949749&keywords=%s"));
 	
-	iChangeEngine("Baidu Search");
+	iChangeEngine("Good Search");
 	
 	for(std::map<std::string, std::string>::iterator it = search_engines.begin(); it!=search_engines.end(); ++it)
 		std::cout << "Title: " << it->first << "; Link: " << it->second << std::endl;
@@ -132,7 +132,7 @@ SearchView::Draw(BRect)
 void
 SearchView::MessageReceived(BMessage *msg)
 {
-	std::cout << msg->what << " (" << MSG_SEARCH << ") " << std::endl;
+	//std::cout << msg->what << " (" << MSG_SEARCH << ") " << std::endl;
 	switch (msg->what) {
 	    case B_ABOUT_REQUESTED:
 	      	iAboutRequested();
@@ -164,25 +164,6 @@ SearchView::Archive(BMessage *archive, bool deep) const
 	archive->AddRect("bounds", Bounds());
 	
 	return B_OK;
-}
-
-void
-SearchView::MouseDown(BPoint point)
-{
-	BPoint cursor;
-	uint32 buttons;
-	BRect  bounds = subView->fBtnSearch->Bounds();
-	
-	GetMouse(&cursor, &buttons);
-	if(buttons & B_SECONDARY_MOUSE_BUTTON)
-	{
-		;//TODO: Popup a menu to select search engine or more options
-	}
-	else
-	{
-		if(bounds.Contains(point))
-			iSearch();
-	}
 }
 
 void

@@ -38,7 +38,6 @@ public:
 	void				iChangeEngine(std::string engine);
 	void				iLoad();
 	
-	virtual void		MouseDown(BPoint point);
 	
 private:
 	SearchView_sub      *subView;
