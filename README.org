@@ -1,0 +1,20 @@
+#+TITLE: Haiku WebSearch
+#+OPTIONS: ^:nil
+* Haiku WebSearch
+A Haiku Application that provides a replicant to search the internet.
+
+* Build
+#+BEGIN_SRC sh
+make
+#+END_SRC
+
+* Usage
+** Configure
+	 Config files at B_USER_SETTINGS_DIRECTORY/HaikuWebSearch
+   files: engines
+*** engines
+    E.g.: Good_Search http://www.goodsearch.com/search-web?charityid=949749&keywords=%s
+    Title and link are separated by a space, dash in title will be convert to space.
+    There should be one set of title and link for each line.
+    If you do not defined "Good Search", Program will add it automatically.
+
