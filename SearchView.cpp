@@ -53,9 +53,21 @@ SearchView_sub::SearchView_sub(BRect frame)
 	fTextControl->ResizeBy(-10 - fBtnSearch->Bounds().Width(), 0);
 	fBtnSearch->MoveTo(frame.right - fBtnSearch->Bounds().Width() - 5, 
 					(Bounds().Height() - fBtnSearch->Bounds().Height())/2);
+					
+	BTextView *fText = new BTextView(fBtnSearch->Bounds(), "bgView", fBtnSearch->Bounds(), B_FOLLOW_ALL, B_WILL_DRAW);
+	BString text;
+	text << "Search";
+	fText->SetText(text);
+	fText->SetViewColor(ui_color(B_PANEL_BACKGROUND_COLOR));
+	fText->MoveTo(frame.right - fBtnSearch->Bounds().right - 5, 
+				(Bounds().Height() - fText->Bounds().Height())/2 + 5);
+	
+	fText->SetAlignment(B_ALIGN_CENTER);
+	fText->MakeSelectable(false);
 	
 	AddChild(fTextControl);
 	AddChild(fBtnSearch);
+	AddChild(fText);
 	SetViewColor(B_TRANSPARENT_COLOR);
 }
 
