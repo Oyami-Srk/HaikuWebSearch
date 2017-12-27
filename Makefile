@@ -20,26 +20,27 @@ APP_MIME_SIG =
 #	The following lines tell Pe and Eddie where the SRCS, RDEFS, and RSRCS are
 #	so that Pe and Eddie can fill them in for you.
 #%{
-# @src->@ 
+SRCS = \
+	 App.cpp  \
+	 MainWindow.cpp  \
+	 SearchView.cpp  \
 
-#	Specify the source files to use. Full paths or paths relative to the 
-#	Makefile can be included. All files, regardless of directory, will have
-#	their object files created in the common object directory. Note that this
-#	means this Makefile will not work correctly if two source files with the
-#	same name (source.c or source.cpp) are included from different directories.
-#	Also note that spaces in folder names do not work well with this Makefile.
-SRCS =  App.cpp MainWindow.cpp SearchView.cpp
 
 #	Specify the resource definition files to use. Full or relative paths can be
 #	used.
-RDEFS = 
+RDEFS = \
+	 Resources.rdef  \
+
 
 #	Specify the resource files to use. Full or relative paths can be used.
 #	Both RDEFS and RSRCS can be utilized in the same Makefile.
-RSRCS =  Resources.rsrc
+RSRCS = \
+
 
 # End Pe/Eddie support.
 # @<-src@ 
+#%}
+
 #%}
 
 #	Specify libraries to link against.
