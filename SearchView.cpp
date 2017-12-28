@@ -12,6 +12,7 @@
 #include <Path.h>
 #include <Volume.h>
 #include <Directory.h>
+#include <PopUpMenu.h>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
@@ -32,9 +33,23 @@ SearchView_btn::SearchView_btn(BRect frame)
 void		
 SearchView_btn::MouseDown(BPoint point)
 {	
-	BMessage req(MSG_SEARCH);
-	BMessenger messenger(Parent());
-	messenger.SendMessage(&req);
+	BPoint cursor;
+	uint32 buttons;
+	
+	GetMouse(&cursor, &buttons);
+	
+	if(buttons & B_PRIMARY_MOUSE_BUTTON)
+	{
+		BMessage req(MSG_SEARCH);
+		BMessenger messenger(Parent());
+		messenger.SendMessage(&req);
+	}else
+	{
+		BMessage req(MSG_POPUPMENU);
+		BMessenger messenger(Parent());
+		req.AddPoint("point", point);
+		messenger.SendMessage(&req);
+	}
 }
 
 SearchView_sub::SearchView_sub(BRect frame)
@@ -96,14 +111,18 @@ SearchView::iLoad()
 				title[i++] = ' ';
 		search_engines.insert(std::pair<std::string, std::string>(title, link));
 	}
-	if(search_engines.size() == 0)
+	if(search_engines.size() == 0 || search_engines.find("Good Search") == search_engines.end())
 		search_engines.insert(std::pair<std::string, std::string>("Good Search", 
 				"http://www.goodsearch.com/search-web?charityid=949749&keywords=%s"));
 	
 	iChangeEngine("Good Search");
 	
+	fPopupMenu = new BPopUpMenu("sel_menu");
 	for(std::map<std::string, std::string>::iterator it = search_engines.begin(); it!=search_engines.end(); ++it)
+	{
+		fPopupMenu->AddItem(new BMenuItem(it->first.c_str(), NULL));
 		std::cout << "Title: " << it->first << "; Link: " << it->second << std::endl;
+	}
 	std::cout << "Current Engine: " << current_engine << " (" << search_engines[current_engine] << ")" << std::endl;
 }
 
@@ -155,6 +174,15 @@ SearchView::MessageReceived(BMessage *msg)
     		break; 
     	case MSG_SEARCH:
     		iSearch();
+    		break;
+    	case MSG_POPUPMENU:
+    	{
+    		BMenuItem *sel;
+    		if((sel = fPopupMenu->Go(ConvertToScreen(msg->FindPoint("point")))) != NULL)
+    		{
+    			iChangeEngine(std::string(sel->Label()));
+    		}
+    	}
     		break;
 		default:
 			BView::MessageReceived(msg);

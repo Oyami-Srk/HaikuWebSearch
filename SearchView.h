@@ -23,9 +23,13 @@ class _EXPORT SearchView;
 class SearchView_sub;
 class SearchView_btn;
 
+class BPopUpMenu;
+
 enum
 {
-	MSG_SEARCH = 'SEAR'
+	MSG_SEARCH 		= 'SEAR',
+	MSG_POPUPMENU	= 'PUMU',
+	MSG_CHANGEENG	= 'CGEG'
 };
 
 class SearchView : public BView {
@@ -47,6 +51,7 @@ private:
 	SearchView_sub      *subView;
 	std::map<std::string, std::string> search_engines;
 	std::string			current_engine;
+	BPopUpMenu			*fPopupMenu;
 };
 
 class SearchView_sub : public BView
