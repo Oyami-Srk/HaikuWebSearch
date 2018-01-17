@@ -16,6 +16,8 @@
 #include <string>
 #include <map>
 
+#include "PrefsWindow.h"
+
 #define HAIKU_WEBSEARCH_DIRECTORY "HaikuWebSearch"
 #define HAIKU_WEBSEARCH_ENGINES	  "engines"
 
@@ -27,6 +29,7 @@ class BPopUpMenu;
 
 enum
 {
+	MSG_PREFS		= 'PREF',
 	MSG_SEARCH 		= 'SEAR',
 	MSG_POPUPMENU	= 'PUMU',
 	MSG_CHANGEENG	= 'CGEG'
@@ -48,6 +51,7 @@ public:
 	
 	
 private:
+	PrefsWindow*		fPrefsWindow;
 	SearchView_sub      *subView;
 	std::map<std::string, std::string> search_engines;
 	std::string			current_engine;
@@ -58,9 +62,16 @@ class SearchView_sub : public BView
 {
 public:
 		SearchView_sub(BRect frame);
-		
+
 		BTextControl 		*fTextControl;
 		SearchView_btn		*fBtnSearch;
+};
+
+class PrefsButton : public BButton
+{
+public:
+		PrefsButton();
+virtual void	MouseDown(BPoint point);
 };
 
 class SearchView_btn : public BView
