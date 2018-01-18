@@ -24,6 +24,7 @@ SRCS = \
 	 App.cpp  \
 	 MainWindow.cpp  \
 	 SearchView.cpp  \
+	 PrefsWindow.cpp
 
 
 #	Specify the resource definition files to use. Full or relative paths can be

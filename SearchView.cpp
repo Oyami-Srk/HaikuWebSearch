@@ -24,6 +24,28 @@
 const float kDraggerSize = 7;
 
 
+PrefsButton::PrefsButton()
+	:
+	BButton(BRect(10, 10, 70, 40), "prefs", "Settings", NULL)
+{
+}
+
+
+void
+PrefsButton::MouseDown(BPoint point)
+{
+	BPoint cursor;
+	uint32 buttons;
+	GetMouse(&cursor, &buttons);
+
+	if (buttons & B_PRIMARY_MOUSE_BUTTON) {
+		BMessage msg(MSG_PREFS);
+		BMessenger messenger(Parent());
+		messenger.SendMessage(&msg);
+	}
+}
+
+
 SearchView_btn::SearchView_btn(BRect frame)
 	:BView(frame, "WebSearch_btn", B_FOLLOW_NONE, B_WILL_DRAW)
 {
@@ -55,11 +77,15 @@ SearchView_btn::MouseDown(BPoint point)
 SearchView_sub::SearchView_sub(BRect frame)
 	:BView(frame, "WebSearch", B_FOLLOW_NONE, B_WILL_DRAW)
 {
+	AddChild(new PrefsButton());
+	frame.left += 80;
+
 	// Initialize fTextControl
 	fTextControl = new BTextControl(frame, "search", NULL, "", 
 					new BMessage(MSG_SEARCH), B_FOLLOW_NONE);
-					
-	fTextControl->MoveTo(0, (Bounds().Height() - fTextControl->Bounds().Height())/2);
+
+	fTextControl->MoveTo(frame.left,
+		(Bounds().Height() - fTextControl->Bounds().Height()) / 2);
 	fTextControl->SetAlignment(B_ALIGN_LEFT, B_ALIGN_LEFT);
 	
 	// Initialize Button
@@ -130,6 +156,7 @@ SearchView::iLoad()
 SearchView::SearchView(BRect frame) 
 	:
 	BView(frame, "WebSearch", B_FOLLOW_NONE, B_WILL_DRAW),
+	fPrefsWindow(NULL),
 	subView(NULL)
 {
 	subView = new SearchView_sub(frame);
@@ -172,6 +199,10 @@ SearchView::MessageReceived(BMessage *msg)
 	    case B_ABOUT_REQUESTED:
 	      	iAboutRequested();
     		break; 
+		case MSG_PREFS:
+			if (fPrefsWindow == NULL)
+				fPrefsWindow = new PrefsWindow(current_engine.c_str());
+			break;
     	case MSG_SEARCH:
     		iSearch();
     		break;
@@ -238,6 +269,10 @@ SearchView::iSearch()
 {
 	char buf[512];
 	memset(buf, 0, sizeof(char) * 512);
+
+	if (fPrefsWindow != NULL)
+		current_engine = fPrefsWindow->PreferredEngine();
+
 	sprintf(buf,search_engines[current_engine].c_str(), subView->fTextControl->Text());
 	char cmd[512+16];
 	memset(cmd, 0, sizeof(char) * (512 + 16));
